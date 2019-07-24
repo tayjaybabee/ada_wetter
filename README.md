@@ -1,5 +1,22 @@
 # AdaWetter
 
+AdaWetter is an applet that is part of the ADAhome automation suite. This applet fetches local weather data (as well as weather for any location you desire) as well as data from your ADAhome sensePods and aggrigates it all into either a headless display or a gui.
+
+# To Install?
+
+You may have luck navigating to the root directory and running 
+
+'gem install ada-wetter-1.0.0.gem'
+
+Building another gem package will probably break it.
+
+
+
+----
+
+
+# AdaWetter
+
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/ada_wetter`. To experiment with that code, run `bin/console` for an interactive prompt.
 
 TODO: Delete this and the text above, and describe your gem
