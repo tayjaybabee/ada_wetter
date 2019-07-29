@@ -31,10 +31,15 @@ module AdaWetter
 
         end
 
+        db = AdaWetter::Configure::Database
+
+        AdaWetter::Configure::Database.readout
+
         case menu
 
         when 1
-          p "You've reached me!"
+          api_key = prompt.ask("What is your DarkSky API key?")
+
 
         when 2
           require 'launchy'
@@ -42,7 +47,8 @@ module AdaWetter
 
         when 3
           require 'clipboard'
-          Clipboard.copy(@weather_api_reg)
+          Clipboard.implementation = Clipboard::Gtk
+          Clipboard.copy("https://darksky.net/dev/register")
 
         end
         
@@ -62,7 +68,46 @@ module AdaWetter
 
 
       def initialize
+        require 'ada_wetter/commands/configure/common/database'
         @prompt = TTY::Prompt.new
+        if !AdaWetter::Configure::Database.readout
+          create = @prompt.yes?'No configuration file found, would you like me to make a new one?'
+          if create
+            @config = AdaWetter::Configure::Database.create
+            @config.read
+          else
+            say 'Exiting.'
+          end
+        else
+          require 'tty-config'
+          conf = AdaWetter::Configure::Database.readout
+          @config = TTY::Config.new
+          @config.filename='settings'
+          @config.extname='.yml'
+          if File.exist?('../conf/settings.yml')
+            p @config.read('../conf/settings.yml')
+            p @config.fetch(:mindsync, :enabled?)
+            p @config.set('mindsync.enabled?', value: true)
+            begin
+              p @config.write('../conf/settings.yml')
+            rescue TTY::Config::WriteError => e
+              ask_overwrite = @prompt.yes?('This configuration file already exists! Overwrite?(y/n)')
+              if ask_overwrite
+
+                p @config.write('../conf/settings.yml', force: true)
+              else
+
+                @prompt.keypress('Press carriage return to exit', keys: [:return])
+                exit()
+              end
+            end
+            p @config
+          else
+            p 'nope'
+          end
+        end
+
+
         name = ask_name
 
         if defined?(name)

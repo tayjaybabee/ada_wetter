@@ -14,5 +14,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'commander'
   s.add_dependency 'launchy'
   s.add_dependency 'rake'
+  s.add_dependency 'tty-config'
   s.add_dependency 'tty-prompt'
+  s.add_dependency 'gtk3'
 end
