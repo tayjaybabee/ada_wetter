@@ -19,9 +19,9 @@ module AdaWetter::Configure::Database
     config = TTY::Config.coerce(settings)
     config.filename = settings[:settings_file]
     config.extname = settings[:settings_ext]
-    p config.to_h
+    config.to_h
     config.write('../conf/settings.yml')
-    p config.read
+    p readout
 
   end
 

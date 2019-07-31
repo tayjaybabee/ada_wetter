@@ -19,6 +19,7 @@
     <orderEntry type="library" scope="PROVIDED" name="equatable (v0.6.1, RVM: ruby-2.5.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="gdk3 (v3.3.6, RVM: ruby-2.5.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="gdk_pixbuf2 (v3.3.6, RVM: ruby-2.5.5) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="geocoder (v1.5.1, RVM: ruby-2.5.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="gio2 (v3.3.6, RVM: ruby-2.5.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="glib2 (v3.3.6, RVM: ruby-2.5.5) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="gobject-introspection (v3.3.6, RVM: ruby-2.5.5) [gem]" level="application" />

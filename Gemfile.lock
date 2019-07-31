@@ -4,6 +4,7 @@ PATH
     ada-wetter (1.0.0)
       clipboard
       commander
+      geocoder
       gtk3
       launchy
       rake
@@ -33,6 +34,7 @@ GEM
       pango (= 3.3.6)
     gdk_pixbuf2 (3.3.6)
       gio2 (= 3.3.6)
+    geocoder (1.5.1)
     gio2 (3.3.6)
       gobject-introspection (= 3.3.6)
     glib2 (3.3.6)
