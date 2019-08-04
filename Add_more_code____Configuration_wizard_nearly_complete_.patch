@@ -1,0 +1,527 @@
+Index: lib/ada_wetter/helpers/network.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- lib/ada_wetter/helpers/network.rb	(date 1564703470000)
++++ lib/ada_wetter/helpers/network.rb	(date 1564703470000)
+@@ -0,0 +1,33 @@
++require 'open-uri'
++
++module AdaWetter
++  class Application
++
++    module Network
++
++      class Error < StandardError
++        class NoConnectionError < Error
++          attr_reader :message
++
++          def initialize(message='No internet connection found')
++            @message = message
++            @hint = 'Restore connection and try again.'
++          end
++        end
++      end
++
++      def self.connected?
++        require "resolv"
++        dns_resolver = Resolv::DNS.new
++        begin
++          dns_resolver.getaddress("symbolics.com")#the first domain name ever. Will probably not be removed ever.
++          return true
++        rescue Resolv::ResolvError => e
++          return false
++        end
++      end
++
++    end
++
++  end
++end
+\ No newline at end of file
+Index: Gemfile.lock
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Gemfile.lock	(revision c23f21e7d0e67c62036f70e8f5580ad8c7ea2232)
++++ Gemfile.lock	(date 1564691301000)
+@@ -8,6 +8,7 @@
+       gtk3
+       launchy
+       rake
++      rest-client
+       tty-config
+       tty-prompt
+ 
+@@ -27,6 +28,8 @@
+     clipboard (1.3.3)
+     commander (4.4.7)
+       highline (~> 2.0.0)
++    domain_name (0.5.20190701)
++      unf (>= 0.0.5, < 1.0.0)
+     equatable (0.6.1)
+     gdk3 (3.3.6)
+       cairo-gobject (= 3.3.6)
+@@ -49,10 +52,16 @@
+       gio2 (= 3.3.6)
+       pango (= 3.3.6)
+     highline (2.0.2)
++    http-cookie (1.0.3)
++      domain_name (~> 0.5)
+     launchy (2.4.3)
+       addressable (~> 2.3)
++    mime-types (3.2.2)
++      mime-types-data (~> 3.2015)
++    mime-types-data (3.2019.0331)
+     native-package-installer (1.0.7)
+     necromancer (0.5.0)
++    netrc (0.11.0)
+     pango (3.3.6)
+       cairo-gobject (= 3.3.6)
+       gobject-introspection (= 3.3.6)
+@@ -62,6 +71,10 @@
+     pkg-config (1.3.7)
+     public_suffix (3.1.1)
+     rake (12.3.3)
++    rest-client (2.0.2)
++      http-cookie (>= 1.0.2, < 2.0)
++      mime-types (>= 1.16, < 4.0)
++      netrc (~> 0.8)
+     tty-color (0.5.0)
+     tty-config (0.3.2)
+     tty-cursor (0.7.0)
+@@ -74,6 +87,9 @@
+       tty-screen (~> 0.7)
+       wisper (~> 2.0.0)
+     tty-screen (0.7.0)
++    unf (0.1.4)
++      unf_ext
++    unf_ext (0.0.7.6)
+     wisper (2.0.0)
+ 
+ PLATFORMS
+Index: lib/ada_wetter.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- lib/ada_wetter.rb	(revision c23f21e7d0e67c62036f70e8f5580ad8c7ea2232)
++++ lib/ada_wetter.rb	(date 1564559429000)
+@@ -1,4 +1,5 @@
+ require "ada_wetter/version"
++require 'application'
+ 
+ module AdaWetter
+   class Error < StandardError; end
+Index: bin/ada_wetter
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- bin/ada_wetter	(revision c23f21e7d0e67c62036f70e8f5580ad8c7ea2232)
++++ bin/ada_wetter	(date 1564703569000)
+@@ -11,8 +11,8 @@
+ end
+ 
+ begin
+-  AdaWetter::CLI.new
+-rescue AdaWetter::CLI::Error => err
++  AdaWetter::Application.new
++rescue AdaWetter::Application::Error => err
+   puts "ERROR: #{err.message}"
+   exit 1
+ end
+Index: lib/ada_wetter/commands/weather.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- lib/ada_wetter/commands/weather.rb	(revision c23f21e7d0e67c62036f70e8f5580ad8c7ea2232)
++++ lib/ada_wetter/commands/weather.rb	(date 1564695235000)
+@@ -1,21 +1,20 @@
++require 'rest-client'
++
+ module AdaWetter::Weather
+ 
+   require 'ada_wetter/commands/weather/forecast'
+ 
+-  class IncorrectKeyError < StandardError
+-    msg = "That key doesn't appear to be correct."
+-  end
+-
+-  def self.check_key(conf)
+-    require 'open-uri'
++  def self.check_key(key)
+     require 'json'
+-
+-    url = 'https://api.darksky.net/forecast/d992c816780660fc355472315d211d6/37.8267,-122.4233'
+-
+     begin
+-      open(url)
++
++      url = "https://api.darksky.net/forecast/#{key}/37.8267,-122.4233"
++      api = RestClient.get(url){|response, request, result| response }
++
++      JSON.parse(api)
+     end
+ 
+-  end
++
+ 
++  end
+ end
+Index: .idea/ada_wetter.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/ada_wetter.iml	(revision c23f21e7d0e67c62036f70e8f5580ad8c7ea2232)
++++ .idea/ada_wetter.iml	(date 1564691311000)
+@@ -16,6 +16,7 @@
+     <orderEntry type="library" scope="PROVIDED" name="cairo-gobject (v3.3.6, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="clipboard (v1.3.3, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="commander (v4.4.7, RVM: ruby-2.5.5) [gem]" level="application" />
++    <orderEntry type="library" scope="PROVIDED" name="domain_name (v0.5.20190701, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="equatable (v0.6.1, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="gdk3 (v3.3.6, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="gdk_pixbuf2 (v3.3.6, RVM: ruby-2.5.5) [gem]" level="application" />
+@@ -25,20 +26,27 @@
+     <orderEntry type="library" scope="PROVIDED" name="gobject-introspection (v3.3.6, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="gtk3 (v3.3.6, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="highline (v2.0.2, RVM: ruby-2.5.5) [gem]" level="application" />
++    <orderEntry type="library" scope="PROVIDED" name="http-cookie (v1.0.3, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="launchy (v2.4.3, RVM: ruby-2.5.5) [gem]" level="application" />
++    <orderEntry type="library" scope="PROVIDED" name="mime-types (v3.2.2, RVM: ruby-2.5.5) [gem]" level="application" />
++    <orderEntry type="library" scope="PROVIDED" name="mime-types-data (v3.2019.0331, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="native-package-installer (v1.0.7, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="necromancer (v0.5.0, RVM: ruby-2.5.5) [gem]" level="application" />
++    <orderEntry type="library" scope="PROVIDED" name="netrc (v0.11.0, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="pango (v3.3.6, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="pastel (v0.7.3, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="pkg-config (v1.3.7, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="public_suffix (v3.1.1, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="rake (v12.3.3, RVM: ruby-2.5.5) [gem]" level="application" />
++    <orderEntry type="library" scope="PROVIDED" name="rest-client (v2.0.2, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="tty-color (v0.5.0, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="tty-config (v0.3.2, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="tty-cursor (v0.7.0, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="tty-prompt (v0.19.0, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="tty-reader (v0.6.0, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="tty-screen (v0.7.0, RVM: ruby-2.5.5) [gem]" level="application" />
++    <orderEntry type="library" scope="PROVIDED" name="unf (v0.1.4, RVM: ruby-2.5.5) [gem]" level="application" />
++    <orderEntry type="library" scope="PROVIDED" name="unf_ext (v0.0.7.6, RVM: ruby-2.5.5) [gem]" level="application" />
+     <orderEntry type="library" scope="PROVIDED" name="wisper (v2.0.0, RVM: ruby-2.5.5) [gem]" level="application" />
+   </component>
+ </module>
+\ No newline at end of file
+Index: lib/ada_wetter/cli.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- lib/ada_wetter/cli.rb	(revision c23f21e7d0e67c62036f70e8f5580ad8c7ea2232)
++++ lib/ada_wetter/cli.rb	(date 1564864294000)
+@@ -5,7 +5,7 @@
+   # and the dispatch to various command objects
+   #
+   # @api public
+-  class CLI
++  class Application
+     require 'commander/import'
+     # Error raised by this runner
+     Error = Class.new(StandardError)
+@@ -19,7 +19,7 @@
+     program :description, 'An applet for the Wetter module of the AIDA system'
+     #program :help_formatter, :compact
+ 
+-    global_option '-v', '--verbose', 'Provides (sometimes) useful data when program fails'
++    global_option '-v', '--verbose', 'Provides (sometimes) useful data when program fails', { $VERBOSE => true }
+     global_option '-c', '--config FILE', 'Give ada_wetter the location of an previously-made conf file'
+ 
+     default_command :onboarder
+@@ -36,7 +36,7 @@
+       c.option '-ga', '--geocode-api-overview', 'Will provide an overview of docs and important links for the geocoding API'
+       c.action do |args, options|
+         require 'ada_wetter/commands/configure'
+-        AdaWetter::Configure.start_wizard
++        AdaWetter::Application::Configure.start_wizard(options)
+         if options.all_links
+ 
+         end
+Index: ada_wetter.gemspec
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ada_wetter.gemspec	(revision c23f21e7d0e67c62036f70e8f5580ad8c7ea2232)
++++ ada_wetter.gemspec	(date 1564695721000)
+@@ -12,10 +12,11 @@
+   s.executables << 'ada_wetter'
+   s.add_dependency 'clipboard'
+   s.add_dependency 'commander'
+-  s.add_dependency 'launchy'
+   s.add_dependency 'geocoder'
+   s.add_dependency 'gtk3'
++  s.add_dependency 'launchy'
+   s.add_dependency 'rake'
++  s.add_dependency 'rest-client'
+   s.add_dependency 'tty-config'
+   s.add_dependency 'tty-prompt'
+ end
+Index: lib/ada_wetter/commands/configure/common/database.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- lib/ada_wetter/commands/configure/common/database.rb	(revision c23f21e7d0e67c62036f70e8f5580ad8c7ea2232)
++++ lib/ada_wetter/commands/configure/common/database.rb	(date 1564703791000)
+@@ -1,4 +1,4 @@
+-module AdaWetter::Configure::Database
++module AdaWetter::Application::Configure::Database
+ 
+   @default_filepath = '../conf/settings.yml'
+ 
+@@ -26,6 +26,11 @@
+   end
+ 
+   def self.check_file
++    if readout
++      return true
++    else
++      return false
++    end
+ 
+   end
+ 
+Index: lib/ada_wetter/commands/configure/wizard.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- lib/ada_wetter/commands/configure/wizard.rb	(revision c23f21e7d0e67c62036f70e8f5580ad8c7ea2232)
++++ lib/ada_wetter/commands/configure/wizard.rb	(date 1564884859000)
+@@ -1,83 +1,130 @@
+ module AdaWetter
+-  module Configure
+-    class  Wizard
+-      require 'tty-prompt'
+-      require 'ada_wetter/commands/configure/common/database'
++  class Application
++    module Configure
++      class Wizard
++        require 'tty-prompt'
++        require 'ada_wetter/commands/configure/common/database'
+ 
+-      @weather_api_reg = "https://darksky.net/dev/register"
++        @weather_api_reg = "https://darksky.net/dev/register"
+ 
+-      def ask_name
++        def ask_name
+ 
+-        @prompt.ask('What is your name?')
++          @prompt.ask('What is your name?')
+ 
+-      end
++        end
+ 
+-      def check_locale(l)
+-        if Geocoder.search(l)
+-          true
+-        else
+-          false
+-        end
+-      end
++        def check_locale(l)
++          if Geocoder.search(l)
++            true
++          else
++            false
++          end
++        end
+ 
+-      def confirm_locale(results)
+-        results.to_a
+-        loc_arr = []
+-        results.each do |r|
+-          loc_arr.push r.data['display_name']
+-        end
+-        @prompt.enum_select('Correct locale?', loc_arr, per_page: 4, cycle: true, default: 1)
++        def confirm_locale(results)
++          results.to_a
++          loc_arr = []
++          results.each do |r|
++            loc_arr.push r.data['display_name']
++          end
++          @prompt.enum_select('Correct locale?', loc_arr, per_page: 4, cycle: true, default: 1)
+ 
+ 
+-      end
++        end
+ 
+-
+-      def ask_locale
+-        require 'geocoder'
++        def ask_locale(name)
++          require 'geocoder'
+ 
+-        gc = @prompt.ask('What is your location? (Address or zipcode)') do |l|
+-          l.required true
+-        end
++          gc = @prompt.ask("#{name}, where do you live (Address or zipcode)") do |l|
++            l.required true
++          end
+ 
+-      end
++        end
+ 
+-
+-      def ask_api_key
+-        require 'ada_wetter/commands/weather'
++        def ask_api_key
++          require 'ada_wetter/commands/weather'
+ 
+-        begin
+-          api_key = @prompt.ask'What is your DarkSky API Key?'
+-          if !AdaWetter::Weather.check_key(api_key)
+-            raise IncorrectKeyError
+-          end
+-        end
+-      end
++          begin
++            api_key = @prompt.ask 'What is your DarkSky API Key?' do |q|
++              q.required(true)
++              q.messages[:required?] = 'API key must not be empty.'
++            end
++
++            response = AdaWetter::Weather.check_key(api_key)
++            if response.has_key? 'code'
++              if response['code'] == 403
++                raise AdaWetter::Application::Darksky::APIError::IncorrectKeyError
++              else
++                raise AdaWetter::Application::Darksky::APIError::UnknownResponseError
++              end
++            end
++          rescue AdaWetter::Application::Darksky::APIError::IncorrectKeyError => e
+ 
++            puts e.message + "\n" + 'Please check your key and try again'
++            ask_api_key
+ 
++          rescue AdaWetter::Application::DarkSky::APIError::UnknownResponseError => e
++            p e.message
+ 
++          end
++        end
+ 
+-      def initialize
+-        require 'ada_wetter/commands/configure/common/database'
+-        require 'geocoder'
+-        @prompt = TTY::Prompt.new
++        def config
++          database = AdaWetter::Application::Configure::Database
++          if database.check_file
++            conf = database.readout
++          else
++            if @prompt.yes? 'No configuration file found, should I create one? (y/n)'
++              conf = database.create
++            end
++            conf
++          end
++        end
+ 
+-        name = ask_name
+-        locale = ask_locale
+-        unless check_locale(locale)
+-          ask_locale
+-        end
+-        locale = Geocoder.search(locale)
+-        p locale.to_s
+-        confirm_locale(locale)
+-        api_key = ask_api_key
++        def wizard(conf)
++          begin
++            name   = ask_name
++            locale = ask_locale(name)
++
++            locale  = Geocoder.search(locale)
++            locale  = confirm_locale(locale)
++            api_key = ask_api_key
++          end
++        end
++
++        def checklist
++          require 'ada_wetter/helpers/network'
++          network = AdaWetter::Application::Network
++          begin
++            say 'Checking network...' if @verbose
++            raise NoConnectionError unless network.connected?
+ 
+-        if !AdaWetter::Configure::Database.readout
+-          create = @prompt.yes?('No configuration file found, would you like me to make a new one?')
+-          if create
+-            @config = AdaWetter::Configure::Database.create
++            say 'Checking for config file...' if @verbose
++            conf = config
++          rescue AdaWetter::Application::Network::Error::NoConnectionError => e
++            say e.message
++            say e.hint
++            exit
++          end
++          conf
++        end
++
++        def initialize(opts)
++          require 'ada_wetter/commands/configure/common/database'
++          require 'geocoder'
++          @prompt = TTY::Prompt.new
++
++          if opts.verbose
++            @verbose = true
+           else
+-            say 'Exiting.'
++            @verbose = false
+           end
++
++          conf = checklist
++          p conf
++
++          wizard(conf)
++
+         end
+       end
+     end
+@@ -86,3 +133,4 @@
+ 
+ 
+ 
++
+Index: lib/ada_wetter/commands/configure.rb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- lib/ada_wetter/commands/configure.rb	(revision c23f21e7d0e67c62036f70e8f5580ad8c7ea2232)
++++ lib/ada_wetter/commands/configure.rb	(date 1564864294000)
+@@ -1,12 +1,13 @@
+ module AdaWetter
+-  module Configure
++  class Application
++    module Configure
+ 
+-    def self.start_wizard
+-      require 'ada_wetter/commands/configure/wizard'
+-      require 'ada_wetter/commands/configure/common/database'
+-      wiz = AdaWetter::Configure::Wizard
+-      wiz.new
++      def self.start_wizard(opts)
++        require 'ada_wetter/commands/configure/wizard'
++        require 'ada_wetter/commands/configure/common/database'
++        wiz = AdaWetter::Application::Configure::Wizard
++        wiz.new(opts)
++      end
+     end
+-
+   end
+ end
+\ No newline at end of file

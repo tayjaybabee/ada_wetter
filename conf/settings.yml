@@ -1,0 +1,13 @@
+---
+conf_path: "../conf/"
+settings_file: settings
+settings_ext: ".yml"
+mindsync:
+  enabled?: false
+  client_id: 
+weather_info:
+  location: 
+  api_key: 
+  default_format: ext_5day
+user_info:
+  name: 
