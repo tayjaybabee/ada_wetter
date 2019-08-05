@@ -5,7 +5,7 @@ module AdaWetter
   # and the dispatch to various command objects
   #
   # @api public
-  class CLI
+  class Application
     require 'commander/import'
     # Error raised by this runner
     Error = Class.new(StandardError)
@@ -19,7 +19,7 @@ module AdaWetter
     program :description, 'An applet for the Wetter module of the AIDA system'
     #program :help_formatter, :compact
 
-    global_option '-v', '--verbose', 'Provides (sometimes) useful data when program fails'
+    global_option '-v', '--verbose', 'Provides (sometimes) useful data when program fails', { $VERBOSE => true }
     global_option '-c', '--config FILE', 'Give ada_wetter the location of an previously-made conf file'
 
     default_command :onboarder
@@ -36,7 +36,7 @@ module AdaWetter
       c.option '-ga', '--geocode-api-overview', 'Will provide an overview of docs and important links for the geocoding API'
       c.action do |args, options|
         require 'ada_wetter/commands/configure'
-        AdaWetter::Configure.start_wizard
+        AdaWetter::Application::Configure.start_wizard(options)
         if options.all_links
 
         end

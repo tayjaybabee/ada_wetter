@@ -1,4 +1,5 @@
 require "ada_wetter/version"
+require 'application'
 
 module AdaWetter
   class Error < StandardError; end

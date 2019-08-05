@@ -1,21 +1,42 @@
-module AdaWetter::Weather
+require 'rest-client'
+
+module AdaWetter::Application::Weather
 
   require 'ada_wetter/commands/weather/forecast'
 
-  class IncorrectKeyError < StandardError
-    msg = "That key doesn't appear to be correct."
-  end
+  class APIError < AdaWetter::Application::Error
+    attr_accessor :message, :hint
 
-  def self.check_key(conf)
-    require 'open-uri'
-    require 'json'
+    def message
+      'There seems to be an API Error'
+    end
 
-    url = 'https://api.darksky.net/forecast/d992c816780660fc355472315d211d6/37.8267,-122.4233'
+    def hint
+      'Please check your documentation'
+    end
 
-    begin
-      open(url)
+    class IncorrectKeyError < APIError
+      attr_accessor :message, :hint
+
+      def message
+        'Your API key seems to be incorrect'
+      end
+
+      def hint
+        'Please visit the DarkSky API website: https://darksky.net/dev/login'
+      end
     end
 
   end
 
+  def self.check_key(key)
+    require 'json'
+    begin
+
+      url = "https://api.darksky.net/forecast/#{key}/37.8267,-122.4233"
+      api = RestClient.get(url) { |response, request, result| response }
+
+      JSON.parse(api)
+    end
+  end
 end

@@ -1,4 +1,4 @@
-module AdaWetter::Configure::Database
+module AdaWetter::Application::Configure::Database
 
   @default_filepath = '../conf/settings.yml'
 
@@ -26,6 +26,11 @@ module AdaWetter::Configure::Database
   end
 
   def self.check_file
+    if readout
+      return true
+    else
+      return false
+    end
 
   end
 
