@@ -1,27 +1,31 @@
 module AdaWetter::Application::Configure::Database
 
-  @default_filepath = '../conf/settings.yml'
+  @default_filepath = '../conf/settings.conf'
 
-  def self.readout(file=@default_filepath)
-    require 'yaml'
-    if File.exist?(file)
-      YAML.load(File.read(file))
+  def self.readout(config: nil, file: @default_filepath)
+    require 'tty-config'
+    conf = TTY::Config.new
+    if config.nil?
+      if File.exist?(file)
+        conf = conf.read(file)
+      else
+        false
+      end
     else
-      false
+      config
     end
-
   end
 
   def self.create()
     require 'tty-config'
     require 'ada_wetter/commands/configure/common/conf_structs/settings'
-    settings = AdaWetter::Configure::Database::Settings.temp_settings
+    settings = AdaWetter::Application::Configure::Database::Settings.temp_settings
     config = TTY::Config.coerce(settings)
     config.filename = settings[:settings_file]
     config.extname = settings[:settings_ext]
     config.to_h
-    config.write('../conf/settings.yml')
-    p readout
+    config.write('../conf/settings.conf')
+    p readout(config: config)
 
   end
 

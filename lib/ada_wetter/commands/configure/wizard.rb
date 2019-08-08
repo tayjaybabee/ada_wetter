@@ -3,6 +3,7 @@ module AdaWetter
     module Configure
       class Wizard
         require 'tty-prompt'
+        require 'ada_wetter'
         require 'ada_wetter/commands/configure/common/database'
 
         @weather_api_reg = "https://darksky.net/dev/register"
@@ -97,18 +98,6 @@ module AdaWetter
           end
         end
 
-        def config
-          database = AdaWetter::Application::Configure::Database
-          if database.check_file
-            conf = database.readout
-          else
-            if @prompt.yes? 'No configuration file found, should I create one? (y/n)'
-              conf = database.create
-            end
-            conf
-          end
-        end
-
         def wizard(conf)
           begin
             name   = ask_name
@@ -123,7 +112,8 @@ module AdaWetter
             raise NoConnectionError unless @network.connected?
 
             say 'Checking for config file...' if @verbose
-            conf = config
+            conf = AdaWetter::Application.settings
+            @prompt.say "Config file contents: #{conf.to_h}"
           rescue AdaWetter::Application::Network::Error::NoConnectionError => e
             say e.message
             say e.hint

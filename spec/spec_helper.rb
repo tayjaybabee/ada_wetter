@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "ada_wetter"
+require "-*ada_wetter"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

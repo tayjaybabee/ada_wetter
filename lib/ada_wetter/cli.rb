@@ -12,7 +12,6 @@ module AdaWetter
 
     require "ada_wetter/version"
     class Error < StandardError; end
-    P_PATH = Dir.pwd
 
     program :name, 'ada_wetter'
     program :version, '0.0.1'
@@ -23,7 +22,6 @@ module AdaWetter
     global_option '-c', '--config FILE', 'Give ada_wetter the location of an previously-made conf file'
 
     default_command :onboarder
-    p Dir.pwd
 
 
     command :onboarder do |c|
@@ -37,9 +35,7 @@ module AdaWetter
       c.action do |args, options|
         require 'ada_wetter/commands/configure'
         AdaWetter::Application::Configure.start_wizard(options)
-        if options.all_links
 
-        end
       end
     end
 

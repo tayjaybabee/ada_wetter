@@ -1,9 +1,9 @@
-module AdaWetter::Configure::Database::Settings
+module AdaWetter::Application::Configure::Database::Settings
 
   @settings = {
       conf_path: '../conf/',
       settings_file: 'settings',
-      settings_ext: '.yml',
+      settings_ext: '.conf',
       mindsync: {
           enabled?: false,
           client_id: nil,
