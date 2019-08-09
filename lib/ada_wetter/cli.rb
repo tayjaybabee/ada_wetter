@@ -11,17 +11,48 @@ module AdaWetter
     Error = Class.new(StandardError)
 
     require "ada_wetter/version"
-    class Error < StandardError; end
+    require 'tty-prompt'
+    require 'ada_wetter/helpers/error'
+    
+    @@prompt = TTY::Prompt.new
 
     program :name, 'ada_wetter'
     program :version, '0.0.1'
     program :description, 'An applet for the Wetter module of the AIDA system'
     #program :help_formatter, :compact
 
-    global_option '-v', '--verbose', 'Provides (sometimes) useful data when program fails', { $VERBOSE => true }
-    global_option '-c', '--config FILE', 'Give ada_wetter the location of an previously-made conf file'
+    global_option '-v', '--verbose', 'Provides (sometimes) useful data when program fails'
+    global_option '-c', '--config-import FILE', 'Give ada_wetter the location of an previously-made conf file'
+    global_option '-d', '--install-default-conf', 'Installs unconfigured conf file and directory'
 
-    default_command :onboarder
+    default_command :run
+    
+    command :run do |c|
+      c.syntax      = 'ada_wetter <run> [options]'
+      c.summary     = 'Runs the applet.'
+      c.description = 'Delivers local weather data and data from sensors'
+      c.example c.summary 'ada_wetter --trace --verbose'
+      c.option '-g', '--gui', "Starts AdaWetter's GUI instead of the command line utility"
+      c.action do |args, options|
+        arg_check(options)
+        if options.install-default-conf
+          if options.config-import
+            @@prompt.error 'You cannot both import a config file and install the default.'
+            raise ArgumentConflictError
+          end
+          require 'ada_wetter/commands/configure/common/database'
+          db = Configure::Database
+          
+          unless db.check_file
+          
+          end
+        end
+      rescue ArgumentConflictError => e
+        @@prompt.error e.full_message
+        exit(10022)
+      end
+      
+    end
 
 
     command :onboarder do |c|
@@ -33,6 +64,11 @@ module AdaWetter
       c.option '-wa', '--weather-api-overview', 'Will provide an overview of docs and important links for the weather API'
       c.option '-ga', '--geocode-api-overview', 'Will provide an overview of docs and important links for the geocoding API'
       c.action do |args, options|
+        
+        choices = [
+          {name: 'Shell', disabled: '[Not yet implemented]'},
+          'Wizard',
+        ]
         require 'ada_wetter/commands/configure'
         AdaWetter::Application::Configure.start_wizard(options)
 

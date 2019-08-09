@@ -2,10 +2,9 @@ module AdaWetter
   class Application
     require 'ada_wetter/helpers/network'
     require 'ada_wetter/commands/configure/common/database'
+    require 'tty-prompt'
 
-    class DatabaseError < Configure::ConfigError; end
-
-    class NetworkError < Network::Error::NoConnectionError; end
+    @prompt = TTY::Prompt.new
 
     def self.config
       database = AdaWetter::Application::Configure::Database
@@ -24,7 +23,12 @@ module AdaWetter
     def self.settings
       @@settings
     end
-
+    
+    module Error
+    
+    
+    
+    end
 
   end
 end

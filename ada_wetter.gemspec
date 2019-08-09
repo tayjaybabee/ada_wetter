@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description = "Our very very simple CLI"
   s.authors = [ "Taylor-Jayde J. Blackstone" ]
   s.email = 'tayjaybabee@gmail.com'
-  s.files = Dir.glob("{bin,lib}/**/*")
+  s.files = Dir.glob("{bin,lib,conf}/**/*")
   s.files += Dir['[A-Z]*'] + Dir['test/**/*']
   s.require_paths = ["lib"]
   s.executables << 'ada_wetter'
