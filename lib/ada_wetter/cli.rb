@@ -12,10 +12,10 @@ module AdaWetter
     require "ada_wetter/version"
     require 'tty-prompt'
     require 'ada_wetter/helpers/error'
-    Error.new
+    require 'ada_wetter/common/database'
     
     @@prompt = TTY::Prompt.new
-    $adawetter_VERBOSE =
+    $ADA_VERBOSE = false
 
     program :name, 'ada_wetter'
     program :version, '0.0.1'
@@ -28,6 +28,7 @@ module AdaWetter
 
     default_command :run
     
+    
     command :run do |c|
       c.syntax      = 'ada_wetter <run> [options]'
       c.summary     = 'Runs the applet.'
@@ -36,7 +37,17 @@ module AdaWetter
       c.option '-g', '--gui', "Starts AdaWetter's GUI instead of the command line utility"
       c.option '--no-option'
       c.action do |args, options|
-        
+        if options.verbose
+          $ADA_VERBOSE = true
+        end
+        if options.install_default_conf
+          p 'Got me'
+          if $ADA_VERBOSE
+            p 'true'
+          end
+          db = Configure::Database
+          db.create
+        end
         
         @@options = options
       end

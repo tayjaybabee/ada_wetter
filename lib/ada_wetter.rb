@@ -24,9 +24,26 @@ module AdaWetter
       @@settings
     end
     
-    module Error
+    class Error
     
-    
+      # A class to provide information if the end-user should stumble upon and try to use a feature that is not-yet-
+      # implemented
+      class OptionNotImplementedError < Error
+        attr_accessor :message, :hint, :code
+        
+        def message
+          "The option you are trying to use hasn't been implemented yet!"
+        end
+        
+        def hint
+          "Please see documentation!"
+        end
+        
+        def code
+          88
+        end
+        
+      end
     
     end
 

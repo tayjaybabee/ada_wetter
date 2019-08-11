@@ -6,6 +6,13 @@ require 'ada_wetter/cli'
 
 module AdaWetter::Application::Configure::Database
   include AdaWetter
+  
+  if $ADA_VERBOSE
+    @verbose = true
+  else
+    @verbose = false
+  end
+  
   @default_filepath = '../conf/settings.conf'
 
   def self.readout(config: nil, file: @default_filepath)
@@ -24,19 +31,18 @@ module AdaWetter::Application::Configure::Database
 
   def self.create(dir="#{Dir.pwd}/../conf/", file='settings', ext='.conf')
     require 'tty-config'
-    require 'ada_wetter/commands/configure/common/conf_structs/settings'
+    require 'ada_wetter/common/conf_structs/settings'
     require 'fileutils'
     
-    @prompt.say "Received command to make default config file: #{file}" if @options.verbose
+    @prompt.say "Received command to make default config file: #{file}" if @verbose
     
-    @prompt.say 'Creating directory...' if options.verbose
-    FileUtils.mkpath(dir)
-    @prompt.ok "Created #{dir}" if options.verbose
+    @prompt.say 'Creating directory...' if @verbose
+    @prompt.ok "Created #{dir}" if @verbose
     
-    @prompt.say "Creating config file: #{file}#{ext}" if options.verbose
-    @prompt.say 'Creating hash structure using default settings as a template' if options.verbose
+    @prompt.say "Creating config file: #{file}#{ext}" if @verbose
+    @prompt.say 'Creating hash structure using default settings as a template' if @verbose
     settings = AdaWetter::Application::Configure::Database::Settings.temp_settings
-    @prompt.ok "Success! Loaded default configuration structure: #{settings}" if options.verbose
+    @prompt.ok "Success! Loaded default configuration structure: #{settings}" if @verbose
     begin
       
       set_file = "#{file}#{ext}"

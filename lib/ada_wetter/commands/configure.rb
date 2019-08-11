@@ -2,7 +2,7 @@ module AdaWetter
   class Application
     module Configure
 
-      class ConfigError < AdaWetter::Application::Error
+      class ConfigError < Application::Error
         attr_accessor :message, :hint
 
         def message
