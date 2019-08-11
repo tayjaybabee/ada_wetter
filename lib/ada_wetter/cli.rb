@@ -7,14 +7,15 @@ module AdaWetter
   # @api public
   class Application
     require 'commander/import'
-    # Error raised by this runner
-    Error = Class.new(StandardError)
+    
 
     require "ada_wetter/version"
     require 'tty-prompt'
     require 'ada_wetter/helpers/error'
+    Error.new
     
     @@prompt = TTY::Prompt.new
+    $adawetter_VERBOSE =
 
     program :name, 'ada_wetter'
     program :version, '0.0.1'
@@ -22,8 +23,8 @@ module AdaWetter
     #program :help_formatter, :compact
 
     global_option '-v', '--verbose', 'Provides (sometimes) useful data when program fails'
-    global_option '-c', '--config-import FILE', 'Give ada_wetter the location of an previously-made conf file'
-    global_option '-d', '--install-default-conf', 'Installs unconfigured conf file and directory'
+    global_option '-c', '--config_import FILE', 'Give ada_wetter the location of an previously-made conf file'
+    global_option '-d', '--install_default_conf', 'Installs unconfigured conf file and directory'
 
     default_command :run
     
@@ -31,28 +32,16 @@ module AdaWetter
       c.syntax      = 'ada_wetter <run> [options]'
       c.summary     = 'Runs the applet.'
       c.description = 'Delivers local weather data and data from sensors'
-      c.example c.summary 'ada_wetter --trace --verbose'
+      c.example 'description', 'command example'
       c.option '-g', '--gui', "Starts AdaWetter's GUI instead of the command line utility"
+      c.option '--no-option'
       c.action do |args, options|
-        arg_check(options)
-        if options.install-default-conf
-          if options.config-import
-            @@prompt.error 'You cannot both import a config file and install the default.'
-            raise ArgumentConflictError
-          end
-          require 'ada_wetter/commands/configure/common/database'
-          db = Configure::Database
-          
-          unless db.check_file
-          
-          end
-        end
-      rescue ArgumentConflictError => e
-        @@prompt.error e.full_message
-        exit(10022)
+        
+        
+        @@options = options
       end
-      
     end
+    
 
 
     command :onboarder do |c|

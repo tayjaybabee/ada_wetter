@@ -5,6 +5,7 @@ This guide will be written in this format:
 
 * **CODE**
   * _Exception_: ExceptionName
+  * _Meaning_: Exception meaning here
   * _File_: file/defining/code
   * _Raised By_: # Starting from ada_wetter/lib
     * here/be/a

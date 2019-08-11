@@ -1,8 +1,11 @@
+require 'ada_wetter/commands/configure'
+require 'ada_wetter/cli'
+
 # :category: Configuration
 #
 
 module AdaWetter::Application::Configure::Database
-
+  include AdaWetter
   @default_filepath = '../conf/settings.conf'
 
   def self.readout(config: nil, file: @default_filepath)
@@ -19,18 +22,40 @@ module AdaWetter::Application::Configure::Database
     end
   end
 
-  def self.create
+  def self.create(dir="#{Dir.pwd}/../conf/", file='settings', ext='.conf')
     require 'tty-config'
     require 'ada_wetter/commands/configure/common/conf_structs/settings'
     require 'fileutils'
-    p Dir.pwd
-    FileUtils.mkpath("#{Dir.pwd}/../conf")
+    
+    @prompt.say "Received command to make default config file: #{file}" if @options.verbose
+    
+    @prompt.say 'Creating directory...' if options.verbose
+    FileUtils.mkpath(dir)
+    @prompt.ok "Created #{dir}" if options.verbose
+    
+    @prompt.say "Creating config file: #{file}#{ext}" if options.verbose
+    @prompt.say 'Creating hash structure using default settings as a template' if options.verbose
     settings = AdaWetter::Application::Configure::Database::Settings.temp_settings
-    config = TTY::Config.coerce(settings)
-    config.filename = settings[:settings_file]
-    config.extname = settings[:settings_ext]
-    config.to_h
-    config.write("#{Dir.pwd}/../conf/settings.conf")
+    @prompt.ok "Success! Loaded default configuration structure: #{settings}" if options.verbose
+    begin
+      
+      set_file = "#{file}#{ext}"
+      
+      raise "mismatch error" if set_file != def_file
+      
+      config = TTY::Config.coerce(settings)
+      config.filename = settings[:settings_file]
+      config.extname = settings[:settings_ext]
+      
+      config.to_h
+      config.write("#{Dir.pwd}/../conf/settings.conf")
+      
+    rescue "mismatch error"
+      @prompt.error 'For now you must use the following for the filename: settings.conf'
+      abort 'Please try again using the proper name schema'
+      
+    end
+    
 
     p readout(config: config)
 
