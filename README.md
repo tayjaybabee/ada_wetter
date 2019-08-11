@@ -2,6 +2,92 @@
 
 AdaWetter is an applet that is part of the ADAhome automation suite. This applet fetches local weather data (as well as weather for any location you desire) as well as data from your ADAhome sensePods and aggrigates it all into either a headless display or a gui.
 
+# Developers
+
+I recommend using RVM as your Ruby environment if you are in Linux. You can follow the installation instructions found on the RVM site (https://rvm.io/rvm/install) OR you can follow my instructions below. **Note to Ubuntu users!**: The install instructions on the page (https://rvm.io/rvm/install) instruct you to add a PPA and install RVM using the package manager (apt). **I advise against this** as I've had no luck with this method of installation, though I will keep trying.
+
+## Install RVM
+
+Here is how I install RVM (paraphrasing from RVM's site: https://rvm.io/rvm/install):
+
+1. Install RVM GPG key 
+```shell
+    ~$: gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E37D2BAF1CF37B13E2069D6956105BD0E739499BDB
+```
+2. Install RVM 
+```shell
+  ~$: \curl -sSL https://get.rvm.io | bash
+```
+     
+3. Configure shell for RVM
+```shell
+  ~$: source ~/.rvm/scripts/rvm
+```
+
+4. Test RVM installation
+```shell
+  ~$: type rvm | head -n 1
+        #=> rvm is a function
+```
+  If you return anything else, RVM is not functioning properly. Please see their page for more details: https://get.rvm.io
+  
+  Otherwise....
+    
+5. Install ruby 2.5 (for dev this is only acceptable version until others are tested)
+  ```shell
+     ~$: rvm install 2.5
+   ```
+   
+6. Install bundler (if not already installed)
+  ```shell
+    ~$: gem install bundler
+  ```
+   
+## Clone AdaWetter & Install Dependancies
+
+
+1. ```shell
+     ~$: git clone https://github.com/tayjaybabee/ada_wetter.git
+   ```
+  
+2. ```shell
+     ~$: cd ada_wetter
+   ```
+  
+3. ```shell
+     ~/ada_wetter$: bundle install
+   ```
+   
+   Once this is done all dependancies will be installed! You will now be able to run the program in it's current state by doing:
+   
+   ```shell
+     ~/ada_wetter$: bin/ada_wetter
+   ```
+   
+## Note to developers:
+
+* You can build ada_wetter as a gem by doing:
+  ```shell
+    ~/ada_wetter$: gem build ada_wetter
+  ```
+  
+* You can build yard documentation for ada_wetter by doing
+  ```shell
+    ~/ada_wetter$: yard doc
+  ```
+    * If the above doesn't work, maybe yard isn't installed?
+      ```shell
+        ~$: gem install yard
+      ```
+    * Run doc server on localhost:
+      ```shell
+        ~/ada_wetter$: yard server
+      ```
+      Then navigate to the place it tells you in your browser
+
+
+
+
 # To Install?
 
 You may have luck navigating to the root directory and running 
