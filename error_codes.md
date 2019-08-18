@@ -18,21 +18,21 @@ This guide will be written in this format:
 
 ### Argument Errors:
 
-* **10022**
+* **0101**
   * _Exception_: ArgumentError
   * _Meaning_: General logical error with provided arguments
-  * _File_: ada_wetter/helpers/error.rb
+  * _File_: ada_wetter/common/application/error.rb
   * _Raised By_:
-    * N/A (Namespace)
+    * None, used as a namespace
     
-* **1639**
-  * _Exception_: ArgumentConflictError
+* **0102**
+  * _Exception_: ArgumentError::ArgumentMismatchError
   * _Meaning_: Two (or more) arguments provided are logically conflicting
-  * _File_: ada_wetter/helpers/error.rb
+  * _File_: ada_wetter/common/application/error.rb (AdaWetter::Application::ArgumentError::ArgumentMismatchError)
   * _Raised By_:
-    * ada_wetter/cli.rb
-```shell
-     $ ada_wetter run --install-default-config --config ~/Documents/backups/ada_wetter/conf/settings.conf
+    * ada_wetter/common/application/opts (AdaWetter::Application::Opts)
+    ```shell
+     $ ada_wetter run --install_default_config --config ~/Documents/backups/ada_wetter/conf/settings.conf
      $ => Exception raised
      # These two arguments are logically opposed
-```
+    ```

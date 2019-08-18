@@ -1,6 +1,6 @@
-module AdaWetter::Application::Configure::Database::Settings
+module Settings
 
-  @settings = {
+  @temp_set = {
       conf_path: '../conf/',
       settings_file: 'settings',
       settings_ext: '.conf',
@@ -19,7 +19,7 @@ module AdaWetter::Application::Configure::Database::Settings
   }
 
   def self.temp_settings
-    @settings
+    @temp_set
   end
 
 end

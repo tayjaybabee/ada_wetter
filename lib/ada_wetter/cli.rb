@@ -1,33 +1,44 @@
-# frozen_string_literal: true
-
+# Namespace and launch library of AdaWetter
+# @since 0.0.1a1.0
 module AdaWetter
-  # Handle the application command line parsing
-  # and the dispatch to various command objects
+  require 'ada_wetter/common/application'
+
+  # Base class for AdaWetter application, both CLI and GUI. This class
+  # acts as the skeleton for the whole program
   #
-  # @api public
+  # @author Taylor-Jayde J. Blackstone
+  # @since 0.0.1rc1.3
+  # @attr [Types] attribute_name a full description of the attribute
+  # @attr_reader [Types] name description of a readonly attribute
+  # @attr_writer [Types] name description of writeonly attribute
   class Application
+    # Handle the application command line parsing
+    # and the dispatch to various command objects
+    #
+    # @api public
     require 'commander/import'
+    #require 'ada_wetter/common/runtime'
     
-
-    require "ada_wetter/version"
-    require 'tty-prompt'
+    
+    require 'ada_wetter/version'
     require 'ada_wetter/helpers/error'
-    require 'ada_wetter/common/database'
     
-    @@prompt = TTY::Prompt.new
-    $ADA_VERBOSE = false
-
+    # program :help_formatter, :compact
     program :name, 'ada_wetter'
     program :version, '0.0.1'
     program :description, 'An applet for the Wetter module of the AIDA system'
-    #program :help_formatter, :compact
-
-    global_option '-v', '--verbose', 'Provides (sometimes) useful data when program fails'
-    global_option '-c', '--config_import FILE', 'Give ada_wetter the location of an previously-made conf file'
-    global_option '-d', '--install_default_conf', 'Installs unconfigured conf file and directory'
-
-    default_command :run
     
+    global_option '-v', '--verbose', 'Provides (sometimes) useful data when program fails' do
+      OPTIONS[:verbose] = true
+      require 'ada_wetter/common/application/verbose'
+      @verbose = true
+    end
+    global_option '-c', '--config-import FILE', 'Give ada_wetter the location of an previously-made conf file'
+    global_option '-d', '--install-default-conf', 'Installs unconfigured conf file and directory'
+    
+    global_option '--allowClear'
+    
+    default_command :run
     
     command :run do |c|
       c.syntax      = 'ada_wetter <run> [options]'
@@ -37,24 +48,18 @@ module AdaWetter
       c.option '-g', '--gui', "Starts AdaWetter's GUI instead of the command line utility"
       c.option '--no-option'
       c.action do |args, options|
-        if options.verbose
-          $ADA_VERBOSE = true
-        end
+        
+        
         if options.install_default_conf
-          p 'Got me'
-          if $ADA_VERBOSE
-            p 'true'
-          end
           db = Configure::Database
           db.create
         end
-        
-        @@options = options
+      
       end
     end
     
-
-
+    
+    
     command :onboarder do |c|
       c.syntax      = 'ada_wetter onboarder [options]'
       c.summary     = 'Provides a basic overview of configuration needs, and also API links.'
@@ -71,10 +76,10 @@ module AdaWetter
         ]
         require 'ada_wetter/commands/configure'
         AdaWetter::Application::Configure.start_wizard(options)
-
+      
       end
     end
-
+    
     command :configure do |c|
       c.syntax      = 'ada_wetter configure [options]'
       c.summary     = ''
@@ -85,30 +90,30 @@ module AdaWetter
       c.option '--geocode STRING', String, 'Provides location data for ada_wetter to use to fetch weather'
       c.option '-s', '--shell', 'Start a shell for configuration'
       c.option '-w', '--wizard', 'Start the configuration wizard tool'
+      c.option '--clean', "Remove all config files"
       c.action do |args, options|
-        say 'foo' if options.verbose
-        say 'Checking options as provided'
-
-
-        if options.shell and options.wizard
-          say 'You cannot run both the shell and wizard configuration tools at once!'
+        PROMPT.ok "Caught verbose flag!" if @verbose
+        PROMPT.say "Received the following options: #{options}" if @verbose
+        PROMPT.say "Elevating flags..." if @verbose
+        require 'ada_wetter/common/application/opts'
+        include Opts
+        begin
+          Opts.loader(options)
+        rescue ArgumentError::ArgumentMismatchError => e
+          e.full_message
+          PROMPT.yes? 'Would you like me to take you to the '
         end
-
-        if options.shell
-          Configure::Shell.new
-        end
-
+        
         if options.wizard
-          AdaWetter::Configure::Wizard.new
+          PROMPT.ok 'All good! Starting wizard!' if @verbose
+          require 'ada_wetter/commands/configure/wizard'
         end
-
-        onboarder = AdaWetter::Configure::Wizard::Onboarder.new
-        onboarder
-
+        
+      
       end
-
     end
-
+    
+    
     command :gui do |c|
       c.syntax      = 'ada_wetter gui [options]'
       c.summary     = ''
@@ -119,7 +124,7 @@ module AdaWetter
         # Do something or c.when_called Ada_wetter::Commands::Gui
       end
     end
-
+    
     command :cli do |c|
       c.syntax      = 'ada_wetter cli [options]'
       c.summary     = ''
@@ -128,10 +133,10 @@ module AdaWetter
       c.option '--some-switch', 'Some switch that does something'
       c.action do |args, options|
         Weather::Shell.new
-
+      
       end
     end
-
+    
     command :install do |c|
       c.syntax      = 'ada_wetter install [options]'
       c.summary     = ''
