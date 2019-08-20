@@ -36,3 +36,10 @@ This guide will be written in this format:
      $ => Exception raised
      # These two arguments are logically opposed
     ```
+    
+  * **0202**
+    * _Exception_: VLogger::InvalidLevelArgument
+    * _Meaning_: VLogger was passed an invalid STRING in the 'level' field when called on to log or announce a message. This exception is usually raised by an internal programming error or when attempting to use this library in another program.
+    * _File_: ada_wetter/common/application/vb_logger.rb
+    * _Raised_By_:
+      * ada_wetter/common/application/vb_logger.rb

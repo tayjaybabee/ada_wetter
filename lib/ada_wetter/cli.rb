@@ -21,7 +21,7 @@ module AdaWetter
     
     
     require 'ada_wetter/version'
-    require 'ada_wetter/helpers/error'
+    require 'ada_wetter/common/application/helpers/error'
     
     # program :help_formatter, :compact
     program :name, 'ada_wetter'
@@ -32,6 +32,7 @@ module AdaWetter
       OPTIONS[:verbose] = true
       require 'ada_wetter/common/application/verbose'
       @verbose = true
+      LOG = VLogger
     end
     global_option '-c', '--config-import FILE', 'Give ada_wetter the location of an previously-made conf file'
     global_option '-d', '--install-default-conf', 'Installs unconfigured conf file and directory'
@@ -92,20 +93,20 @@ module AdaWetter
       c.option '-w', '--wizard', 'Start the configuration wizard tool'
       c.option '--clean', "Remove all config files"
       c.action do |args, options|
-        PROMPT.ok "Caught verbose flag!" if @verbose
-        PROMPT.say "Received the following options: #{options}" if @verbose
-        PROMPT.say "Elevating flags..." if @verbose
+        LOG.message self,"Caught verbose flag!", 'ok'
+        LOG.message self, "Received the following options: #{options}"
+        LOG.message self, "Elevating flags..."
         require 'ada_wetter/common/application/opts'
         include Opts
         begin
           Opts.loader(options)
         rescue ArgumentError::ArgumentMismatchError => e
-          e.full_message
-          PROMPT.yes? 'Would you like me to take you to the '
+          LOG.message self, e.full_message, 'warn', true
+          PROMPT.yes? 'Would you like me to take you to the OnBoarder? (y/n) >'
         end
         
         if options.wizard
-          PROMPT.ok 'All good! Starting wizard!' if @verbose
+          LOG.message self, 'All good, starting wizard!', 'ok'
           require 'ada_wetter/commands/configure/wizard'
         end
         

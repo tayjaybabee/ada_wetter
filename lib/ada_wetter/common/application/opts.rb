@@ -1,24 +1,22 @@
 module AdaWetter
   class Application
-    require 'ada_wetter/common/application/error'
     module Opts
       
       @verbose = nil
       
       def self.success(opt)
-        PROMPT.ok "Applied the #{opt} flag to options"
-        PROMPT.say "Options state: #{OPTIONS}"
+        LOG.message self, "Applied the #{opt} flag to options", 'ok'
+        LOG.message self, "Options state: #{OPTIONS}", 'ok'
       end
       
       def self.announce(opt)
-        PROMPT.ok "Found #{opt} flag..."
-        PROMPT.say 'Applying to options...'
+        LOG.message self, "Found #{opt} flag...", 'ok'
+        LOG.message self, 'Applying to options...'
       end
       
       def self.loader(opts)
-        @verbose = VERBOSE if defined? VERBOSE
-        PROMPT.ok "Loader received load command with options: #{opts}" if @verbose
-        PROMPT.say 'Checking sanity of provided flags...'
+        LOG.message self, "Loader received load command with options: #{opts}", 'ok'
+        LOG.message self, 'Checking sanity of provided flags'
         if opts.wizard and opts.shell
           # @raise [ArgumentError::ArgumentMismatchError] if two (or more) arguments logically or programmatically
           #   can't be executed when called at the same time. Please choose one, see documentation and try again!

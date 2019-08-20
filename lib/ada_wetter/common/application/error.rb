@@ -35,8 +35,9 @@ module AdaWetter
           PROMPT.warn "#{code} | #{message} + #{hint}"
         end
       end
-    
     end
+    
+    
   end
 
 end
