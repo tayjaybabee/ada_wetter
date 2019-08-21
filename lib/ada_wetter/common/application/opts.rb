@@ -15,12 +15,17 @@ module AdaWetter
       end
       
       def self.loader(opts)
-        LOG.message self, "Loader received load command with options: #{opts}", 'ok'
+        LOG.message self, "Loader received load command with options: #{opts.inspect}", 'ok'
         LOG.message self, 'Checking sanity of provided flags'
         if opts.wizard and opts.shell
           # @raise [ArgumentError::ArgumentMismatchError] if two (or more) arguments logically or programmatically
           #   can't be executed when called at the same time. Please choose one, see documentation and try again!
-          raise ArgumentError::ArgumentMismatchError
+          raise ArgumentMismatchError
+        end
+        if opts.install_default_conf and opts.import_conf
+          # @raise [ArgumentError::ArgumentMismatchError] if two (or more) arguments logically or programmatically
+          # can't be executed when called at the same time. Please choose one, see documentation and try again!
+          raise ArgumentMismatchError
         end
         if opts.wizard
           name = '--wizard'
@@ -33,6 +38,15 @@ module AdaWetter
           announce(name)
           OPTIONS[:clean] = true
           success(name)
+        end
+        if opts.install_default_conf
+          name = '--install-default-conf'
+          announce(name)
+          OPTIONS[:install_default_conf] = true
+          success(name)
+          LOG.message self, 'Starting conf installation function....'
+          require 'ada_wetter/commands/configure'
+          Configure.install_def_conf
         end
       end
     

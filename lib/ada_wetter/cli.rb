@@ -11,22 +11,31 @@ module AdaWetter
   # @attr [Types] attribute_name a full description of the attribute
   # @attr_reader [Types] name description of a readonly attribute
   # @attr_writer [Types] name description of writeonly attribute
+  #
+  #
   class Application
-    # Handle the application command line parsing
-    # and the dispatch to various command objects
+    
+    require 'commander/import' # Provides command parsing for CLI- based programs
+    require 'ada_wetter/version' # Contains version information for AdaWetter
+    
+    # If we have a pre-release version of AdaWetter we want that to reflect in the information delivered when the end-
+    # user triggers the '--help' (or '-h') option.
     #
-    # @api public
-    require 'commander/import'
-    #require 'ada_wetter/common/runtime'
+    desc = 'An applet for the Wetter module of the AIDA system'
     
+    if AdaWetter::PRERELEASE
+      type = PR_TYPE.capitalize
+      desc = "(Pre-release: #{type}) - #{desc}"
+    end
     
-    require 'ada_wetter/version'
-    require 'ada_wetter/common/application/helpers/error'
+    # Using Commander's DSL below we provide the name, version, and description of the program which will be available
+    # to be parsed at various times when called throughout the program. (For example; when you use the '--help' flag)
     
-    # program :help_formatter, :compact
     program :name, 'ada_wetter'
-    program :version, '0.0.1'
-    program :description, 'An applet for the Wetter module of the AIDA system'
+    program :version, AdaWetter::HUM_VER
+    program :description, desc
+    
+    # Specify some global options (and what to do if these options are used)
     
     global_option '-v', '--verbose', 'Provides (sometimes) useful data when program fails' do
       OPTIONS[:verbose] = true
@@ -34,27 +43,39 @@ module AdaWetter
       @verbose = true
       LOG = VLogger
     end
-    global_option '-c', '--config-import FILE', 'Give ada_wetter the location of an previously-made conf file'
     global_option '-d', '--install-default-conf', 'Installs unconfigured conf file and directory'
     
-    global_option '--allowClear'
+    global_option '--import-conf FILE', 'Import a config file from a previous installation of AdaWetter. FILE required'
+    global_option '--write-log FILE', 'Instructs the program to write all output to a file. FILE required'
+    
+    global_option '--allow-clear', 'Provide the program with permission to clear terminal screen'
+    
+    # If the user does not specify an AdaWetter command when calling the binary we will run the 'run' command by default
+    # as this command includes all pre-runtime configuration checks needed to ensure a stable running environment.
     
     default_command :run
+    
+    # This command is the default command for AdaWetter and will run either the CLI version of the program or (if you
+    # use the '--gui' flag) the GUI version. NOTE: the '--gui' flag currently only works on the 'run' command!
+    #
+    # For example: ada_wetter --verbose run --gui
+    #   > GUI version of AdaWetter opens*
+    #
+    # * If your environment is not properly set-up you will not (at least as of this writing) be presented with any GUI
+    #   windows or dialog boxes. Check your terminal (if not already watching it) to ensure the program isn't waiting for
+    #   your input to continue.
+    #     TODO: Create GUI configuration wizard and control panel that will be accessible from within the GUI's preferences menu as well as from the command line (without triggering the entirety of the program whilst doing so)
+    #
+    #     TODO: Provide pop-up modal dialog box that report start-up exceptions/notifications/warnings when Adawetter is run
     
     command :run do |c|
       c.syntax      = 'ada_wetter <run> [options]'
       c.summary     = 'Runs the applet.'
       c.description = 'Delivers local weather data and data from sensors'
-      c.example 'description', 'command example'
+      c.example 'Typical usage:', 'ada_wetter --verbose --trace --gui'
       c.option '-g', '--gui', "Starts AdaWetter's GUI instead of the command line utility"
       c.option '--no-option'
       c.action do |args, options|
-        
-        
-        if options.install_default_conf
-          db = Configure::Database
-          db.create
-        end
       
       end
     end
@@ -91,18 +112,27 @@ module AdaWetter
       c.option '--geocode STRING', String, 'Provides location data for ada_wetter to use to fetch weather'
       c.option '-s', '--shell', 'Start a shell for configuration'
       c.option '-w', '--wizard', 'Start the configuration wizard tool'
-      c.option '--clean', "Remove all config files"
+      c.option '--clean', "Remove all config files. Calling any other arguments other than verbose with this will result in an error"
       c.action do |args, options|
+        
         LOG.message self,"Caught verbose flag!", 'ok'
-        LOG.message self, "Received the following options: #{options}"
+        LOG.message self, "Received the following options: #{options.inspect}"
         LOG.message self, "Elevating flags..."
         require 'ada_wetter/common/application/opts'
         include Opts
         begin
           Opts.loader(options)
-        rescue ArgumentError::ArgumentMismatchError => e
-          LOG.message self, e.full_message, 'warn', true
-          PROMPT.yes? 'Would you like me to take you to the OnBoarder? (y/n) >'
+        rescue Error::ArgumentError::ArgumentMismatchError => e
+          ask_ob = PROMPT.yes? 'Would you like me to take you to the OnBoarder? (y/n) >'
+          if ask_ob
+            LOG.message self, 'User indicated desire to use onboarder. Starting...', 'ok'
+            # start onboarder
+          else
+            LOG.message self, 'User replied negatively, exiting with advice...', 'warn'
+            LOG.message self, 'User declined onboarder, no options. Exiting', 'error'
+            e.full_message0
+            exit e.code
+          end
         end
         
         if options.wizard
