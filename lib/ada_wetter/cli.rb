@@ -119,6 +119,7 @@ module AdaWetter
         LOG.message self, "Received the following options: #{options.inspect}"
         LOG.message self, "Elevating flags..."
         require 'ada_wetter/common/application/opts'
+        require 'ada_wetter/common/application/error'
         include Opts
         begin
           Opts.loader(options)

@@ -20,12 +20,12 @@ module AdaWetter
         if opts.wizard and opts.shell
           # @raise [ArgumentError::ArgumentMismatchError] if two (or more) arguments logically or programmatically
           #   can't be executed when called at the same time. Please choose one, see documentation and try again!
-          raise ArgumentMismatchError
+          raise AdaWetter::Application::Error::ArgumentError::ArgumentMismatchError
         end
         if opts.install_default_conf and opts.import_conf
           # @raise [ArgumentError::ArgumentMismatchError] if two (or more) arguments logically or programmatically
           # can't be executed when called at the same time. Please choose one, see documentation and try again!
-          raise ArgumentMismatchError
+          raise AdaWetter::Application::Error::ArgumentError::ArgumentMismatchError
         end
         if opts.wizard
           name = '--wizard'

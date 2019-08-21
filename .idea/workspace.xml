@@ -6,23 +6,15 @@
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/lib/ada_wetter/commands/configure/wizard.rb" line="129" />
     <bookmark url="file://$PROJECT_DIR$/lib/ada_wetter/commands/configure.rb" line="82" />
+    <bookmark url="file://$PROJECT_DIR$/lib/ada_wetter/cli.rb" line="121" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8a7e1635-0ad1-454d-93b4-02be6c111f40" name="Default Changelist" comment="Merge remote-tracking branch 'ada_wetter/v0.1-rc0.2' into v0.1-rc0.2&#10;&#10;# Conflicts:&#10;#&#9;lib/ada_wetter.rb&#10;#&#9;lib/ada_wetter/cli.rb&#10;#&#9;lib/ada_wetter/commands/configure.rb&#10;#&#9;lib/ada_wetter/common/database.rb">
-      <change afterPath="$PROJECT_DIR$/lib/ada_wetter/common/application/resources/default_conf.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/taylor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/taylor.xml" afterDir="false" />
+    <list default="true" id="8a7e1635-0ad1-454d-93b4-02be6c111f40" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ada_wetter.gemspec" beforeDir="false" afterPath="$PROJECT_DIR$/ada_wetter.gemspec" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/ada_wetter/cli.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ada_wetter/cli.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ada_wetter/commands/configure.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ada_wetter/commands/configure.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/ada_wetter/common/application.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ada_wetter/common/application.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ada_wetter/common/application/error.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ada_wetter/common/application/error.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ada_wetter/common/application/helpers/key_events.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ada_wetter/common/application/helpers/v_logger.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ada_wetter/common/application/helpers/v_logger.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/ada_wetter/common/application/helpers/error.rb" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/ada_wetter/common/application/opts.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ada_wetter/common/application/opts.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ada_wetter/common/application/settings.rb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ada_wetter/common/conf_structs/settings.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ada_wetter/common/application/resources/conf_structs/settings.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/ada_wetter/version.rb" beforeDir="false" afterPath="$PROJECT_DIR$/lib/ada_wetter/version.rb" afterDir="false" />
     </list>
     <list id="822184e9-e998-4c83-8846-492e3fc1eb9e" name="Add more code    Configuration wizard nearly complete" comment="" />
     <ignored path="$PROJECT_DIR$/.idea/shelf/" />
@@ -37,13 +29,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/ada_wetter/cli.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="594">
-              <caret line="132" column="27" selection-start-line="132" selection-start-column="27" selection-end-line="132" selection-end-column="27" />
+            <state relative-caret-position="368">
+              <caret line="121" column="52" selection-start-line="121" selection-start-column="52" selection-end-line="121" selection-end-column="52" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/ada_wetter/commands/configure.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="308">
@@ -64,8 +56,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/ada_wetter/common/application.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="10" column="4" lean-forward="true" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+            <state>
+              <caret column="44" selection-start-column="44" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -89,15 +81,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/ada_wetter/version.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="42">
-              <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/ada_wetter/common/application/helpers/v_logger.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="421">
@@ -106,11 +89,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/ada_wetter/common/application/opts.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="84">
-              <caret line="34" column="11" lean-forward="true" selection-start-line="34" selection-start-column="11" selection-end-line="34" selection-end-column="11" />
+            <state relative-caret-position="321">
+              <caret line="27" column="83" selection-start-line="27" selection-start-column="83" selection-end-line="27" selection-end-column="83" />
             </state>
           </provider>
         </entry>
@@ -196,12 +179,12 @@
         <option value="$PROJECT_DIR$/lib/ada_wetter/version.rb" />
         <option value="$PROJECT_DIR$/ada_wetter.gemspec" />
         <option value="$PROJECT_DIR$/lib/ada_wetter/common/application/error.rb" />
-        <option value="$PROJECT_DIR$/lib/ada_wetter/common/application/opts.rb" />
-        <option value="$PROJECT_DIR$/lib/ada_wetter/common/application.rb" />
         <option value="$PROJECT_DIR$/lib/ada_wetter/common/application/helpers/v_logger.rb" />
         <option value="$PROJECT_DIR$/lib/ada_wetter/common/application/resources/conf_structs/settings.rb" />
-        <option value="$PROJECT_DIR$/lib/ada_wetter/cli.rb" />
         <option value="$PROJECT_DIR$/lib/ada_wetter/commands/configure.rb" />
+        <option value="$PROJECT_DIR$/lib/ada_wetter/cli.rb" />
+        <option value="$PROJECT_DIR$/lib/ada_wetter/common/application.rb" />
+        <option value="$PROJECT_DIR$/lib/ada_wetter/common/application/opts.rb" />
       </list>
     </option>
   </component>
@@ -427,7 +410,7 @@
       <workItem from="1566037567400" duration="23559000" />
       <workItem from="1566263283733" duration="234000" />
       <workItem from="1566264097583" duration="4447000" />
-      <workItem from="1566293676669" duration="29096000" />
+      <workItem from="1566293676669" duration="30069000" />
     </task>
     <task id="LOCAL-00001" summary=" Add new files&#10; &#10; * Did work on configuration wizard&#10; * Built gem should install using:&#10;   'gem install ada_wetter-1.0.0.gem'&#10; * Added dependencies:&#10;   * tty-config&#10;     tty-config will allow us to better manage local config files&#10;   * tty-prompt&#10;     tty-prompt provides libraries that make user interaction more pleasant than just p or puts&#10;   * gtk&#10;     gtk allows us to copy requested data to users clipboard and will later be used for the gui to AdaSuite">
       <created>1564382689845</created>
@@ -478,16 +461,24 @@
       <option name="project" value="LOCAL" />
       <updated>1566166191458</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Pushing more code">
+      <created>1566356145299</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1566356145300</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="279931000" />
+    <option name="totallyTimeSpent" value="280904000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="-1" width="1602" height="848" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.795422" visible="true" weight="0.27506426" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.795422" visible="true" weight="0.27506426" />
       <window_info id="Structure" order="1" sideWeight="0.20457797" side_tool="true" weight="0.25321338" />
       <window_info id="Learn" order="2" show_stripe_button="false" sideWeight="0.4989339" weight="0.32969153" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -504,7 +495,7 @@
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4993573" weight="0.32904148" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50321335" side_tool="true" weight="0.042918455" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="12" sideWeight="0.49550128" visible="true" weight="0.042918455" />
+      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49550128" visible="true" weight="0.042918455" />
       <window_info anchor="bottom" id="Messages" order="13" sideWeight="0.4974293" weight="0.32618025" />
       <window_info active="true" anchor="bottom" id="Inspection Results" order="14" sideWeight="0.4993573" visible="true" weight="0.32904148" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -551,18 +542,8 @@
     <MESSAGE value="More changes" />
     <MESSAGE value="Global options now work. When using the configure command program will exit&#10;&#10;gem install yard&#10;&#10;cd ada_wetter&#10;yard doc&#10;yard server&#10;navigate to localhost:8808" />
     <MESSAGE value="Merge remote-tracking branch 'ada_wetter/v0.1-rc0.2' into v0.1-rc0.2&#10;&#10;# Conflicts:&#10;#&#9;lib/ada_wetter.rb&#10;#&#9;lib/ada_wetter/cli.rb&#10;#&#9;lib/ada_wetter/commands/configure.rb&#10;#&#9;lib/ada_wetter/common/database.rb" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'ada_wetter/v0.1-rc0.2' into v0.1-rc0.2&#10;&#10;# Conflicts:&#10;#&#9;lib/ada_wetter.rb&#10;#&#9;lib/ada_wetter/cli.rb&#10;#&#9;lib/ada_wetter/commands/configure.rb&#10;#&#9;lib/ada_wetter/common/database.rb" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="ruby-line">
-          <url>file://$PROJECT_DIR$/lib/ada_wetter/common/application/helpers/error.rb</url>
-          <line>4</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Pushing more code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Pushing more code" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ada_wetter@error.rcov" NAME="error Coverage Results" MODIFIED="1565399164803" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/lib/ada_wetter/helpers" MODULE_NAME="ada_wetter" />
@@ -684,13 +665,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/ada_wetter/common/application/helpers/error.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1659">
-          <caret line="79" selection-start-line="79" selection-end-line="79" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/ada_wetter/common/application/helpers/network.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="567">
@@ -766,13 +740,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/ada_wetter/common/application/opts.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="34" column="11" lean-forward="true" selection-start-line="34" selection-start-column="11" selection-end-line="34" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/ada_wetter/common/application/settings.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="21">
@@ -780,31 +747,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/ada_wetter/common/application/error.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="693">
-          <caret line="33" column="10" lean-forward="true" selection-start-line="33" selection-start-column="10" selection-end-line="33" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/ada_wetter/common/application/helpers/v_logger.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="421">
           <caret line="56" column="11" selection-start-line="56" selection-start-column="11" selection-end-line="56" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/ada_wetter/common/application.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="10" column="4" lean-forward="true" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/ada_wetter/cli.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
-          <caret line="132" column="27" selection-start-line="132" selection-start-column="27" selection-end-line="132" selection-end-column="27" />
         </state>
       </provider>
     </entry>
@@ -819,6 +765,41 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="308">
           <caret line="90" column="76" lean-forward="true" selection-start-line="90" selection-start-column="76" selection-end-line="90" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ada_wetter/common/application/helpers/error.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="589">
+          <caret line="79" selection-start-line="79" selection-end-line="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ada_wetter/cli.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="121" column="52" selection-start-line="121" selection-start-column="52" selection-end-line="121" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ada_wetter/common/application/error.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="693">
+          <caret line="33" column="10" lean-forward="true" selection-start-line="33" selection-start-column="10" selection-end-line="33" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ada_wetter/common/application.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="44" selection-start-column="44" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/ada_wetter/common/application/opts.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="27" column="83" selection-start-line="27" selection-start-column="83" selection-end-line="27" selection-end-column="83" />
         </state>
       </provider>
     </entry>
