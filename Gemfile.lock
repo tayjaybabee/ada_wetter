@@ -34,7 +34,7 @@ GEM
       pango (= 3.3.6)
     gdk_pixbuf2 (3.3.6)
       gio2 (= 3.3.6)
-    geocoder (1.5.1)
+    geocoder (1.6.3)
     gio2 (3.3.6)
       gobject-introspection (= 3.3.6)
     glib2 (3.3.6)
